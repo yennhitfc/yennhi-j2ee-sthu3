@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_layout}">
+
+<body>
+
+<div layout:fragment="content">
+
+    <h1>Danh sách sản phẩm</h1>
+
+    <div th:if="${successMessage}" class="alert alert-success">
+        <p th:text="${successMessage}"></p>
+    </div>
+
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+    <a class="btn btn-primary mb-3"
+       th:href="@{/products/create}">
+        Thêm sản phẩm mới
+    </a>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên</th>
+            <th>Ảnh</th>
+            <th>Giá</th>
+            <th>Danh mục</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.id}"></td>
+            <td th:text="${product.name}"></td>
+            <td>
+                <div th:if="${product.image}">
+                    <img th:src="@{|/uploads/${product.image}|}"
+                         style="
+                            width:100px;
+                            height:100px;
+                            object-fit:contain;
+                            border:1px solid #ddd;
+                            background:#fff;
+                         "
+                         alt="Ảnh sản phẩm">
+                </div>
+
+                <span th:if="${product.image == null or product.image.isEmpty()}">Chưa có ảnh</span>
+            </td>
+
+            <td th:text="${product.price}"></td>
+            <td th:text="${product.category != null ? product.category.name : 'Chưa chọn'}"></td>
+            <td>
+                <a th:href="@{|/products/${product.id}/edit|}"
+                   class="btn btn-warning btn-sm">Sửa</a>
+
+                <form th:action="@{|/products/${product.id}/delete|}"
+                      method="post" style="display:inline;">
+                    <button class="btn btn-danger btn-sm">Xóa</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

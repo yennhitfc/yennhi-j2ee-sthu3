@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/_layout}">
+
+<body>
+
+<div layout:fragment="content">
+
+    <h1>Sửa sản phẩm</h1>
+
+    <form th:action="@{|/products/${product.id}/edit|}"
+          th:object="${product}"
+          method="post">
+
+        <div class="mb-3">
+            <label>Tên</label>
+            <input class="form-control" th:field="*{name}">
+        </div>
+
+        <div class="mb-3" th:if="${product.image}">
+            <label>Ảnh hiện tại</label><br>
+            <img th:src="@{'/uploads/' + ${product.image}}"
+                 style="width:120px;height:90px;object-fit:cover;">
+        </div>
+
+        <div class="mb-3">
+            <label>Đổi ảnh</label>
+            <input class="form-control"
+                   type="file"
+                   name="imageFile"
+                   accept="image/*">
+        </div>
+
+
+        <div class="mb-3">
+            <label>Giá</label>
+            <input class="form-control" th:field="*{price}">
+        </div>
+
+        <div class="mb-3">
+            <label>Danh mục</label>
+            <select class="form-control" th:field="*{category.id}">
+                <option th:each="c : ${categories}"
+                        th:value="${c.id}"
+                        th:text="${c.name}">
+                </option>
+            </select>
+        </div>
+
+        <button class="btn btn-success">Cập nhật</button>
+        <a class="btn btn-secondary" th:href="@{/products}">Quay lại</a>
+
+    </form>
+
+</div>
+
+</body>
+</html>
